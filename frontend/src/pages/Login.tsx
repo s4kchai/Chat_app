@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardAction } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const subMitLogin = (e: React.FormEvent) => {
+  const navigate = useNavigate();
+  const subMitLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -16,15 +18,16 @@ function Login() {
       return;
     }
 
-    // Reset error
-    setError("");
+    try {
+      const response = await axios.post("/api/auth/login", { email, password });
+      console.log("Login success:", response.data);
+    } catch (err: any) {
+      setError(err.response.data.msg);
+    }
+  };
 
-    // ✅ Call API
-    console.log("Login with:", { email, password });
-
-    // ตัวอย่าง: เก็บ token ลง localStorage
-    // const res = await fetch("/api/login", { ... })
-    // localStorage.setItem("token", res.token)
+  const gotoRegister = () => {
+    navigate("/register");
   };
 
   return (
@@ -36,11 +39,13 @@ function Login() {
           Enter your email below to login to your account
         </CardDescription> */}
           {/* <CardAction>
-          <Button variant="link">Sign Up</Button>
-        </CardAction> */}
+            <Button variant="link" onClick={gotoRegister}>
+              Sign Up
+            </Button>
+          </CardAction> */}
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={subMitLogin}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -56,7 +61,7 @@ function Login() {
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <a href="#" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                  <a href="/Resetpassword" className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
                     Forgot your password?
                   </a>
                 </div>
@@ -69,15 +74,20 @@ function Login() {
                 />
               </div>
             </div>
+            {error && <p className="text-red-500">{error}</p>}
+            <Button type="submit" className="w-full mt-4">
+              Login
+            </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex-col gap-2">
-          <Button type="submit" className="w-full" onClick={subMitLogin}>
-            Login
-          </Button>
-          <Button variant="outline" className="w-full">
-            Login with Google
-          </Button>
+
+        <CardFooter className="flex-col gap-2 text-gray-600">
+          <div className="flex items-center">
+            <Label htmlFor="password">Dont have an account ?</Label>
+            <Button variant="link" onClick={gotoRegister}>
+              Sign Up
+            </Button>
+          </div>
         </CardFooter>
       </Card>
     </div>

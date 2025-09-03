@@ -29,10 +29,10 @@ const createUserSchema = z.object({
 });
 
 const loginSchema = z.object({
-  username: z
+  email: z
     .string()
-    .min(1, "Username is required")
-    .min(5, "Username must be at least 5 characters")
+    .min(1, "Email is required")
+    .email("Please enter a valid email address")
     .transform((val) => val.toLowerCase()),
 
   password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),

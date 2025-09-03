@@ -1,7 +1,8 @@
 const pool = require("../config/db");
 
 async function getAllUsers() {
-  const { rows } = await pool.query("SELECT * FROM .users");
+  const { rows } = await pool.query("SELECT id,username,email FROM users");
+
   return rows;
 }
 

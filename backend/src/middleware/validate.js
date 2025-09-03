@@ -8,9 +8,10 @@ function validate(schema) {
 
     if (!result.success) {
       const errorList = result.error.errors || result.error.issues || [];
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        error: errorList.map((e) => e.message),
-      });
+
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ success: false, msg: errorList.map((e) => e.message).join(",") });
     }
     req.body = result.data;
     next();

@@ -6,5 +6,6 @@ const { createUserSchema, loginSchema } = require("../schema/userSchema");
 
 router.post("/login", validate(loginSchema), authController.login);
 router.post("/register", validate(createUserSchema), authController.register);
+router.post("/refresh", authController.generateToken);
 
 module.exports = router;

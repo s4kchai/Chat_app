@@ -2,6 +2,7 @@
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
