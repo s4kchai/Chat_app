@@ -5,11 +5,10 @@ async function create(req, res) {
   try {
     const userId = req.user.id;
     const room = await roomService.createRoom(userId);
-
     return res.status(StatusCodes.CREATED).json({
       success: true,
       msg: "Room created successfully",
-      room,
+      data: room,
     });
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -32,7 +31,7 @@ async function getRoombyId(req, res) {
 
     return res.json({
       success: true,
-      room,
+      data: room,
     });
   } catch (err) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
